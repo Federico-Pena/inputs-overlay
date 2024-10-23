@@ -1,0 +1,44 @@
+{
+  "appId": "com.chifo.app",
+  "productName": "KyM Overlay",
+  "afterAllArtifactBuild": "copy-setup-before-build.js",
+  "npmRebuild": true,
+  "appImage": {
+    "artifactName": "${productName}-${version}.${ext}"
+  },
+  "asarUnpack": ["resources/**"],
+  "nsis": {
+    "artifactName": "KyM_Overlay-${version}-setup.${ext}",
+    "shortcutName": "${productName}",
+    "uninstallDisplayName": "${productName}-${version}",
+    "createDesktopShortcut": "always",
+    "allowToChangeInstallationDirectory": true,
+    "deleteAppDataOnUninstall": true,
+    "oneClick": false
+  },
+  "files": [
+    "!page-for-download/*",
+    "!copy-setup-before-build.js",
+    "!**/.vscode/*",
+    "!src/*",
+    "!electron.vite.config.{js,ts,mjs,cjs}",
+    "!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}",
+    "!{.env,.env.*,.npmrc,pnpm-lock.yaml}"
+  ],
+  "extraFiles": [
+    {
+      "from": "venv",
+      "to": "venv",
+      "filter": ["**/*"]
+    },
+    {
+      "from": "python",
+      "to": "python",
+      "filter": ["**/*.py"]
+    }
+  ],
+  "win": {
+    "icon": "resources/icon.png",
+    "target": ["nsis"]
+  }
+}

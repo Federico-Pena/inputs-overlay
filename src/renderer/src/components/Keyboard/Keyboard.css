@@ -1,0 +1,85 @@
+.keyboard {
+  position: relative;
+  display: grid;
+}
+
+.keyboard-row {
+  display: flex;
+  width: 100%;
+}
+
+.key {
+  flex: 1;
+  border: none;
+  border: 0.5px solid rgba(255, 255, 255, 0.575);
+  position: relative;
+  font-family: var(--font);
+  font-size: var(--font-size);
+  color: var(--font-color);
+  background-color: var(--bg-color);
+  opacity: var(--opacity);
+  border-radius: 0.3rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition:
+    color 0.1s,
+    opacity 0.1s,
+    background-color 0.1s,
+    scale 0.1s;
+  &:hover {
+    scale: 0.9;
+  }
+}
+.key.noEditing {
+  opacity: 0.2;
+}
+
+.key.editing {
+  position: fixed;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: inputAnimation 0.5s forwards;
+  padding: 0.5rem;
+  display: grid;
+  clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+  grid-auto-flow: column;
+  border: 0.5px solid #eeeeee;
+  background-color: rgba(32, 32, 32, 1);
+  input {
+    border: none;
+    width: 100px;
+    outline: 0.5px #eeeeee;
+    background-color: transparent;
+    color: var(--color-text-light);
+    padding: 0 0.5rem;
+  }
+  span {
+    display: grid;
+    justify-content: end;
+    cursor: pointer;
+    transition: scale 0.2s;
+    color: red;
+    &:hover {
+      scale: 1.1;
+    }
+  }
+}
+.key.space {
+  flex-grow: 5;
+}
+
+.key.active {
+  background-color: var(--hl-color);
+  color: var(--font-highlight-color);
+  opacity: 1;
+  scale: 0.9;
+}
+@keyframes inputAnimation {
+  to {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+}

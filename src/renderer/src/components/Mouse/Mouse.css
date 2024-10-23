@@ -1,0 +1,84 @@
+.mouse {
+  display: grid;
+  gap: 0.2rem;
+  grid-auto-flow: column;
+  grid-template-columns: 0.1fr 1fr 0.3fr 1fr;
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.mouse-button {
+  border: 0.5px solid rgba(255, 255, 255, 0.575);
+  border-radius: 4px;
+  transform: rotateY (0deg);
+  transition: transform 0.3s linear;
+  opacity: var(--opacity);
+  background-color: var(--bg-color);
+}
+
+.mouse-button.active {
+  background-color: var(--hl-color);
+  opacity: 1;
+}
+
+.mouse-button.side-forward,
+.mouse-button.side-back {
+  align-self: flex-end;
+  height: 90%;
+}
+
+.mouse-button.right,
+.mouse-button.left {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  grid-row: 1/-1;
+}
+.mouse-button.right {
+  grid-column: 4;
+}
+.mouse-button.middle {
+  grid-row: 1/-1;
+  overflow: hidden;
+  width: 100%;
+  display: grid;
+  position: relative;
+  place-items: center;
+  border-radius: 1rem;
+}
+
+.middle-direction {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  font-size: clamp(12px, 3vw, 50px);
+  opacity: 0;
+}
+.middle-direction svg {
+  opacity: 1;
+  color: var(--hl-color);
+}
+.middle-direction.wheelUp {
+  transform: rotateZ(-90deg);
+  animation: wheelUp 1s;
+  opacity: 1;
+}
+.middle-direction.wheelDown {
+  transform: rotateZ(90deg);
+  opacity: 1;
+  animation: wheelDown 1s;
+}
+@keyframes wheelUp {
+  from {
+    bottom: 0%;
+  }
+  to {
+    bottom: 100%;
+  }
+}
+@keyframes wheelDown {
+  from {
+    top: 0%;
+  }
+  to {
+    top: 100%;
+  }
+}

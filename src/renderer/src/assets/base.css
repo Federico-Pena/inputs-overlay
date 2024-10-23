@@ -1,0 +1,51 @@
+:root {
+  --font: poppins, system-ui, sans-serif;
+  --font-size: clamp(8px, 2dvw, 20px);
+}
+@font-face {
+  font-family: poppins;
+  src: url('./Poppins-Regular.ttf');
+  font-display: swap;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font);
+  font-size: var(--font-size);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+.dragComponent {
+  min-height: 100dvh;
+  min-width: 100dvw;
+  border-radius: 0.5rem;
+  user-select: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  &:focus-visible {
+    border: 1px solid #ffffff8e;
+  }
+}
+.mouseActive.keyboardActive {
+  grid-template-rows: auto 1fr 20%;
+}
+.mouseActive {
+  grid-template-rows: auto 1fr;
+}
+.keyboardActive {
+  grid-template-rows: auto 1fr;
+}
