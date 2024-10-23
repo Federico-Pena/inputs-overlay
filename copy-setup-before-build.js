@@ -25,7 +25,7 @@ exports.default = async function (context) {
     const destinationDir = join(
       process.cwd(),
       'page-for-download',
-      'dist',
+      'public',
       'downloadable'
     )
 

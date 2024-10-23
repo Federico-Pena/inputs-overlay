@@ -8,13 +8,14 @@
   },
   "asarUnpack": ["resources/**"],
   "nsis": {
-    "artifactName": "KyM_Overlay-${version}-setup.${ext}",
+    "artifactName": "KyM_Overlay-${version}.${ext}",
     "shortcutName": "${productName}",
     "uninstallDisplayName": "${productName}-${version}",
     "createDesktopShortcut": "always",
     "allowToChangeInstallationDirectory": true,
     "deleteAppDataOnUninstall": true,
-    "oneClick": false
+    "oneClick": false,
+    "allowElevation": true
   },
   "files": [
     "!page-for-download/*",
