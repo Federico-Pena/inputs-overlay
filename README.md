@@ -16,6 +16,7 @@ A **Keyboard and Mouse Overlay** built with Electron and Python.
 - **Python 3.x** installed: [Python Official Website](https://www.python.org/downloads/)
 - Install `pip` (Python package installer) if not available.
 - **Git** installed: [Git Official Website](https://git-scm.com/)
+- **WinRar** installed: [WinRar Official Website](https://www.winrar.es/descargas). Optional, but recommended for compression and copying setup file.
 
 ---
 

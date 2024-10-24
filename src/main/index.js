@@ -61,6 +61,9 @@ app.whenReady().then(() => {
     startPythonScript(mainWindow)
 
     mainWindow.setAlwaysOnTop(true, 'toolbar')
+    mainWindow.setIcon(
+      nativeImage.createFromPath(join(__dirname, '../../resources/icon.ico'))
+    )
     mainWindow.setThumbarButtons([
       {
         tooltip: 'Reset window position',
