@@ -4,6 +4,7 @@ interface Texts {
     password: string
     download: string
     downloadWarning: string
+    souceCode: string
     platform: string
     featuresTitle: string
     features: string[]
@@ -29,6 +30,7 @@ export const texts: Texts = {
     password: 'The password for the file is:',
     downloadWarning:
       'The browser may flag the download as unsafe. If it does, please click "Keep anyway".',
+    souceCode: 'You can find the source code at:',
     whyText:
       "Whether you're a content creator, streamer, or instructor, KyM Overlay helps visually communicate user actions on the screen. Easily customize the look and behavior of the keyboard and mouse overlay to fit your needs.",
     contact: 'Need help? Contact us at'
@@ -48,6 +50,7 @@ export const texts: Texts = {
     password: 'La contraseña del archivo es:',
     downloadWarning:
       'El navegador puede marcar la descarga como no segura. Si esto sucede, haz clic en "Conservar de todos modos".',
+    souceCode: 'Puedes encontrar el código fuente en:',
     whyText:
       'Ya seas creador de contenido, streamer o instructor, KyM Overlay te ayuda a comunicar visualmente las acciones del usuario en pantalla. Personaliza fácilmente el aspecto y comportamiento del teclado y ratón según tus necesidades.',
     contact: '¿Necesitas ayuda? Contáctanos en'

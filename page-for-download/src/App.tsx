@@ -45,6 +45,18 @@ function App() {
         <span>{t.platform}</span>
 
         <p className="download-warning">⚠️ {t.downloadWarning}</p>
+        <p className="source-code-link">
+          {t.souceCode}{' '}
+          <a
+            href="https://github.com/Federico-Pena/kym-overlay"
+            target="_blank"
+            rel="noreferrer"
+            aria-label={'https://github.com/Federico-Pena/kym-overlay'}
+          >
+            Github
+          </a>
+        </p>
+
         <span>
           {t.password} <strong>{passwordData?.password || 'KyM_Overlay'}</strong>
         </span>
