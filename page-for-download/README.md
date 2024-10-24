@@ -40,7 +40,7 @@ KyM Overlay es una aplicación que muestra un **teclado y ratón en pantalla** q
 
 3. **Instrucciones de Instalación:**
    - Descomprime el archivo `.zip`.
-   - Ejecuta el instalador `KyM_Overlay-1.0.0-setup.exe` y sigue las instrucciones.
+   - Ejecuta el instalador `KyM_Overlay-1.0.0.exe` y sigue las instrucciones.
 
 ---
 

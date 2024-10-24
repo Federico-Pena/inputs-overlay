@@ -1,10 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { texts } from './texts'
 
 type Language = 'en' | 'es'
 function App() {
   const [language, setLanguage] = useState<Language>('en')
+  const [passwordData, setPasswordData] = useState<{ password: string } | null>(null)
+
+  const passwordPath = '/downloadable/password.json'
+  useEffect(() => {
+    fetch(passwordPath)
+      .then((response) => response.json())
+      .then((data) => setPasswordData(data))
+      .catch((error) => console.error('Error al cargar la contraseña:', error))
+  }, [])
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLanguage(e.target.value as Language)
@@ -24,8 +33,9 @@ function App() {
         </div>
 
         <h1>{t.title}</h1>
+
         <a
-          href="downloadable/KyM_Overlay-1.0.0.zip"
+          href="downloadable/KyM_Overlay-1.0.0.exe"
           download
           className="download-button"
           aria-label={t.download}
@@ -33,6 +43,11 @@ function App() {
           {t.download}
         </a>
         <span>{t.platform}</span>
+
+        <p className="download-warning">⚠️ {t.downloadWarning}</p>
+        <span>
+          {t.password} <strong>{passwordData?.password || 'KyM_Overlay'}</strong>
+        </span>
       </header>
 
       <section>
