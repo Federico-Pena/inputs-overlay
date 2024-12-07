@@ -22,3 +22,38 @@ export const DirectionWheelIcon = () => (
     />
   </svg>
 )
+
+export const MoveIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M12 2v20m3-3l-3 3l-3-3M19 9l3 3l-3 3M2 12h20M5 9l-3 3l3 3M9 5l3-3l3 3"
+    />
+  </svg>
+)
+
+export const StrechIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M3 12h7L7 9m0 6l3-3m11 0h-7l3-3m0 6l-3-3M9 6V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1M9 18v1a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-1"
+    />
+  </svg>
+)
+
+export const ExpandIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+    <path
+      fill="currentColor"
+      d="M3.5 4v16h-2V4zm.586 8L9 7.086L10.414 8.5l-2.5 2.5h8.172l-2.5-2.5L15 7.086L19.914 12L15 16.914L13.586 15.5l2.5-2.5H7.914l2.5 2.5L9 16.914zM22.5 4v16h-2V4z"
+    />
+  </svg>
+)

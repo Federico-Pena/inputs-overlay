@@ -9,8 +9,8 @@ const useToastContext = () => {
 }
 
 const useKeyboardContext = () => {
-  const { changeKeyboard, keyboard } = useContext(KeyboardContext)
-  return { changeKeyboard, keyboard }
+  const { changeKeyboard, keyboard, restoreKeyboard } = useContext(KeyboardContext)
+  return { changeKeyboard, keyboard, restoreKeyboard }
 }
 const useSettingsContext = () => {
   const {
@@ -19,33 +19,39 @@ const useSettingsContext = () => {
     bgColor,
     textColor,
     hlColor,
-    textHighlightColor,
     keyboardActive,
+    textHighContrastColor,
+    joystickActive,
     mouseActive,
     opacity,
-    changeActiveMyK,
+    changeActiveUserInputs,
     changeColors,
     changeOpacity,
     restoreStyles,
     changeWinSize,
-    changeSettingsWinPosition
+    changeSettingsWinPosition,
+    strechKeys,
+    handleStrechKeys
   } = useContext(SettingsContext)
   return {
     winSize,
     winPosition,
     bgColor,
     hlColor,
-    textHighlightColor,
     textColor,
+    textHighContrastColor,
     keyboardActive,
     mouseActive,
+    joystickActive,
     opacity,
-    changeActiveMyK,
+    changeActiveUserInputs,
     changeColors,
     changeOpacity,
     restoreStyles,
     changeWinSize,
-    changeSettingsWinPosition
+    changeSettingsWinPosition,
+    strechKeys,
+    handleStrechKeys
   }
 }
 export { useKeyboardContext, useSettingsContext, useToastContext }

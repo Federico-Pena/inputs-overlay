@@ -1,7 +1,6 @@
 interface Texts {
   [key: string]: {
     title: string
-    password: string
     download: string
     downloadWarning: string
     souceCode: string
@@ -21,13 +20,13 @@ export const texts: Texts = {
     platform: 'For Windows 64-bit',
     featuresTitle: 'Features of KyM Overlay',
     features: [
+      '✅ Works on OBS.',
       '🎯 Input Highlighting: Clicks and key presses are emphasized visually.',
       '✏️ Customizable: Edit, remove keys, and change text, colors, and highlights.',
       '⚙️ Opacity Control: Adjust visibility of the keyboard and mouse.',
       '👁️ Show/Hide: Toggle the keyboard and mouse as needed.'
     ],
     whyTitle: 'Why Choose KyM Overlay?',
-    password: 'The password for the file is:',
     downloadWarning:
       'The browser may flag the download as unsafe. If it does, please click "Keep anyway".',
     souceCode: 'You can find the source code at:',
@@ -41,13 +40,13 @@ export const texts: Texts = {
     platform: 'Para Windows 64 bits',
     featuresTitle: 'Características de KyM Overlay',
     features: [
+      '✅ Funciona en OBS.',
       '🎯 Resaltado de entradas: Los clics y las teclas se destacan visualmente.',
       '✏️ Personalizable: Edita, elimina teclas y cambia texto, colores y resaltados.',
       '⚙️ Control de opacidad: Ajusta la visibilidad del teclado y el ratón.',
       '👁️ Mostrar/Ocultar: Alterna la visibilidad del teclado y el ratón según sea necesario.'
     ],
     whyTitle: '¿Por qué elegir KyM Overlay?',
-    password: 'La contraseña del archivo es:',
     downloadWarning:
       'El navegador puede marcar la descarga como no segura. Si esto sucede, haz clic en "Conservar de todos modos".',
     souceCode: 'Puedes encontrar el código fuente en:',

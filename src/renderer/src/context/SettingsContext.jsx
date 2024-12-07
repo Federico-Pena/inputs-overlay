@@ -1,5 +1,4 @@
-import { createContext, useState, useEffect, useReducer } from 'react'
-import { getTextColor } from '../utils/getTextColor'
+import { createContext, useEffect, useReducer } from 'react'
 import { getSettingsFromLocalStorage } from '../utils/useLocalStorage'
 import { SETTINGS_TYPES, settingsReducer } from './settingsReducer.js'
 const initialStateSettings = {
@@ -14,10 +13,12 @@ const initialStateSettings = {
   bgColor: '#202020',
   hlColor: '#ffffff',
   textColor: '#ffffff',
-  textHighlightColor: '#000000',
+  textHighContrastColor: '#000000',
   keyboardActive: true,
   mouseActive: true,
-  opacity: 1
+  joystickActive: false,
+  opacity: 1,
+  strechKeys: false
 }
 const SettingsContext = createContext(initialStateSettings)
 
@@ -37,8 +38,8 @@ const SettingsContextProvider = ({ children }) => {
     dispatch({ type: SETTINGS_TYPES.CHANGE_WIN_POSITION, payload: value })
   }
 
-  const changeActiveMyK = (key, value) => {
-    dispatch({ type: SETTINGS_TYPES.CHANGE_ACTIVE_MYK, payload: { key, value } })
+  const changeActiveUserInputs = (key, value) => {
+    dispatch({ type: SETTINGS_TYPES.CHANGE_ACTIVE_USER_INPUTS, payload: { key, value } })
   }
 
   const changeOpacity = (value) => {
@@ -53,16 +54,20 @@ const SettingsContextProvider = ({ children }) => {
     dispatch({ type: SETTINGS_TYPES.RESTORE_STYLES })
   }
 
+  const handleStrechKeys = () => {
+    dispatch({ type: SETTINGS_TYPES.STRECH_KEYS })
+  }
   return (
     <SettingsContext.Provider
       value={{
         ...settings,
-        changeActiveMyK,
+        changeActiveUserInputs,
         changeColors,
         changeOpacity,
         restoreStyles,
         changeWinSize,
-        changeSettingsWinPosition
+        changeSettingsWinPosition,
+        handleStrechKeys
       }}
     >
       {children}

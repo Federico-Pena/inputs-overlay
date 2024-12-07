@@ -1,26 +1,12 @@
-const { join } = require('node:path')
-const { rm, mkdir, writeFile } = require('node:fs/promises')
+const { mkdir, rm } = require('node:fs/promises')
 const { existsSync } = require('node:fs')
 const { exec } = require('node:child_process')
+const { join } = require('node:path')
 
-const createPasswordFile = async (frontendDestinationDir, password) => {
-  try {
-    const passwordFilePath = join(frontendDestinationDir, 'password.json')
-    const content = {
-      password: password
-    }
-    await writeFile(passwordFilePath, JSON.stringify(content, null, 2), 'utf-8')
-    return `Password file created at: ${passwordFilePath}`
-  } catch (err) {
-    const error = new Error(err.message)
-    error.name = 'Error creating password file'
-    throw error
-  }
-}
-
-const compressAndCopyFile = async (source, destination, password) => {
+const compressAndCopyFile = async (source, destination) => {
   return new Promise((resolve, reject) => {
-    const command = `rar a -ep -hp${password} -sfx "${destination}" "${source}"`
+    const newFilePath = join(destination, 'Setup')
+    const command = `rar a -ep "${newFilePath}" "${source}"`
     exec(command, (error, stdout, stderr) => {
       if (error) {
         if (error.message.includes('"rar"')) {
@@ -56,16 +42,15 @@ const consoleColor = (text, color = 'white') => {
 exports.default = async function (context) {
   try {
     const consoleWidth = process.stdout.columns
-    consoleColor('-'.repeat(consoleWidth), 'black')
-    consoleColor('Init copy-setup-before-build')
-    const source = context.artifactPaths[1]
-    const setupName = context.artifactPaths[1].split('\\').pop()
     const frontendDestinationDir = join(
       process.cwd(),
       'page-for-download',
       'public',
       'downloadable'
     )
+    consoleColor('-'.repeat(consoleWidth), 'black')
+    const source = context.artifactPaths[1]
+    consoleColor(`Copy file ${source} to ${frontendDestinationDir}`, 'green')
 
     if (!existsSync(source)) {
       throw new Error(`The file ${source} does not exist.`)
@@ -76,17 +61,8 @@ exports.default = async function (context) {
       consoleColor(`Directory created: ${frontendDestinationDir}`, 'green')
     }
 
-    const compressedFileName = `${setupName.split('.exe')[0]}`
-    const destination = join(frontendDestinationDir, compressedFileName)
-    const password = setupName.split('-')[0]
-
-    const resultCompress = await compressAndCopyFile(source, destination, password)
-    const resultcreatePassword = await createPasswordFile(
-      frontendDestinationDir,
-      password
-    )
-    consoleColor(resultCompress, 'green')
-    consoleColor(resultcreatePassword, 'green')
+    const resultCopy = await compressAndCopyFile(source, frontendDestinationDir)
+    consoleColor(resultCopy, 'green')
 
     await rm(context.outDir, { recursive: true, force: true })
     consoleColor(`Directory deleted: ${context.outDir}`, 'green')

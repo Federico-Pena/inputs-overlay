@@ -1,0 +1,45 @@
+.arrow {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    border-radius: 50%;
+    background-color: var(--bg-color);
+    scale: 2;
+  }
+}
+.arrow.pressed {
+  svg {
+    color: var(--text-high-contrast-color);
+    background-color: var(--hl-color);
+  }
+}
+.arrow.arrow-up {
+  grid-row: 3;
+  grid-column: 2;
+  rotate: -90deg;
+}
+.arrow.arrow-down {
+  grid-row: 4;
+  grid-column: 2;
+  rotate: 90deg;
+}
+.arrow.arrow-left {
+  grid-row: 3;
+  grid-column: 1;
+  rotate: 180deg;
+}
+.arrow.arrow-right {
+  grid-row: 3;
+  right: 100%;
+  grid-column: 3;
+}
+.arrow.arrow-left,
+.arrow.arrow-right {
+  top: 50%;
+}
+.arrow.arrow-up,
+.arrow.arrow-down {
+  right: 50%;
+}

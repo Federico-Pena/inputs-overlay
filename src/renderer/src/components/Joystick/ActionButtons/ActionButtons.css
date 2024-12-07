@@ -1,0 +1,42 @@
+.action-button {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    border-radius: 50%;
+    scale: 2;
+    background-color: var(--bg-color);
+  }
+}
+.action-button.A {
+  grid-row: 4;
+  grid-column: 5;
+}
+.action-button.B {
+  grid-row: 3;
+  grid-column: 6;
+}
+.action-button.X {
+  grid-row: 3;
+  grid-column: 4;
+  left: 100%;
+}
+.action-button.Y {
+  grid-row: 3;
+  grid-column: 5;
+}
+.action-button.B,
+.action-button.X {
+  top: 50%;
+}
+.action-button.A,
+.action-button.Y {
+  left: 50%;
+}
+.action-button.pressed {
+  svg {
+    color: var(--text-high-contrast-color);
+    background-color: var(--hl-color);
+  }
+}

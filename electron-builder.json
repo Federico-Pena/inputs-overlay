@@ -1,6 +1,6 @@
 {
   "appId": "com.chifo.app",
-  "productName": "KyM Overlay",
+  "productName": "Inputs Overlay",
   "afterAllArtifactBuild": "copy-setup-before-build.js",
   "npmRebuild": true,
   "appImage": {
@@ -8,7 +8,7 @@
   },
   "asarUnpack": ["resources/**"],
   "nsis": {
-    "artifactName": "KyM_Overlay-${version}.${ext}",
+    "artifactName": "Inputs_Overlay-${version}.${ext}",
     "shortcutName": "${productName}",
     "uninstallDisplayName": "${productName}-${version}",
     "createDesktopShortcut": "always",
@@ -18,13 +18,13 @@
     "allowElevation": true
   },
   "files": [
-    "!page-for-download/*",
-    "!copy-setup-before-build.js",
-    "!**/.vscode/*",
     "!src/*",
-    "!electron.vite.config.{js,ts,mjs,cjs}",
-    "!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}",
-    "!{.env,.env.*,.npmrc,pnpm-lock.yaml}"
+    "!**/page-for-download",
+    "!**/copy-setup-before-build.js",
+    "!**/.vscode/*",
+    "!**/electron.vite.config.{js,ts,mjs,cjs}",
+    "!**/{.editorconfig,.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}",
+    "!**/{.env,.env.*,.npmrc,pnpm-lock.yaml}"
   ],
   "extraFiles": [
     {
@@ -33,8 +33,8 @@
       "filter": ["**/*"]
     },
     {
-      "from": "python",
-      "to": "python",
+      "from": "src/main/python",
+      "to": "src/main/python",
       "filter": ["**/*.py"]
     }
   ],

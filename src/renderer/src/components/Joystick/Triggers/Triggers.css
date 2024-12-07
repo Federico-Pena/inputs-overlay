@@ -1,0 +1,53 @@
+.trigger {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: 2px solid var(--font-color);
+    background-color: var(--bg-color);
+    transition: color 0.2s;
+  }
+}
+.trigger.trigger.downLeft,
+.trigger.trigger.downRight {
+  span {
+    height: 90%;
+    border-radius: 0.5rem 0.5rem 0.1rem 0.1rem;
+  }
+}
+.trigger.trigger.upLeft,
+.trigger.trigger.upRight {
+  span {
+    height: 50%;
+    align-self: flex-start;
+    border-radius: 0.1rem 0.1rem 0.5rem 0.5rem;
+  }
+}
+.trigger.upRight {
+  grid-row: 2;
+  grid-column: 5;
+}
+.trigger.downRight {
+  grid-row: 1;
+  grid-column: 5;
+}
+.trigger.upLeft {
+  grid-row: 2;
+  grid-column: 2;
+}
+.trigger.downLeft {
+  grid-row: 1;
+  grid-column: 2;
+}
+.trigger.pressed {
+  span {
+    color: var(--text-high-contrast-color);
+    background-color: var(--hl-color);
+    outline-color: var(--hl-color);
+  }
+}

@@ -22,8 +22,12 @@ const KeyboardContextProvider = ({ children }) => {
     setKeyboard(newKeyboard)
     saveKeyboardToLocalStorage(newKeyboard)
   }
+  const restoreKeyboard = () => {
+    setKeyboard(keysWindows)
+    saveKeyboardToLocalStorage(keysWindows)
+  }
   return (
-    <KeyboardContext.Provider value={{ changeKeyboard, keyboard }}>
+    <KeyboardContext.Provider value={{ restoreKeyboard, changeKeyboard, keyboard }}>
       {children}
     </KeyboardContext.Provider>
   )

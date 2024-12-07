@@ -1,84 +1,122 @@
 .keyboard {
-  position: relative;
   display: grid;
-}
-
-.keyboard-row {
-  display: flex;
-  width: 100%;
-}
-
-.key {
-  flex: 1;
-  border: none;
-  border: 0.5px solid rgba(255, 255, 255, 0.575);
   position: relative;
-  font-family: var(--font);
-  font-size: var(--font-size);
-  color: var(--font-color);
-  background-color: var(--bg-color);
-  opacity: var(--opacity);
-  border-radius: 0.3rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  cursor: pointer;
-  transition:
-    color 0.1s,
-    opacity 0.1s,
-    background-color 0.1s,
-    scale 0.1s;
-  &:hover {
-    scale: 0.9;
-  }
 }
-.key.noEditing {
-  opacity: 0.2;
-}
+.keyboard.strech {
+  .keyboard-row {
+    display: flex;
+    .key {
+      flex: auto;
+      max-width: 40px;
+    }
+    .key.tiny {
+      max-width: 60px;
+    }
+    .key.medium {
+      flex: 2;
+      max-width: 100px;
+    }
 
-.key.editing {
-  position: fixed;
-  z-index: 1;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: inputAnimation 0.5s forwards;
-  padding: 0.5rem;
-  display: grid;
-  clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
-  grid-auto-flow: column;
-  border: 0.5px solid #eeeeee;
-  background-color: rgba(32, 32, 32, 1);
-  input {
-    border: none;
-    width: 100px;
-    outline: 0.5px #eeeeee;
-    background-color: transparent;
-    color: var(--color-text-light);
-    padding: 0 0.5rem;
-  }
-  span {
-    display: grid;
-    justify-content: end;
-    cursor: pointer;
-    transition: scale 0.2s;
-    color: red;
-    &:hover {
-      scale: 1.1;
+    .key.large {
+      flex: 5;
+      max-width: 70%;
+    }
+    .key.editing {
+      max-width: none;
     }
   }
 }
-.key.space {
-  flex-grow: 5;
+.keyboard.expand {
+  .keyboard-row {
+    display: flex;
+    .key {
+      flex: 1;
+    }
+    .key.medium {
+      flex: 2;
+    }
+    .key.large {
+      flex: 5;
+    }
+  }
 }
+.keyboard-row {
+  .key {
+    animation: none;
+    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.199));
+    text-transform: capitalize;
+    border: none;
+    color: var(--font-color);
+    background-color: var(--bg-color);
+    opacity: var(--opacity);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    border-radius: 0.3rem;
+    margin: 0.1rem;
+    transition:
+      color 0.1s,
+      opacity 0.1s,
+      background-color 0.1s,
+      scale 0.1s;
+    &:hover {
+      scale: 0.9;
+    }
+  }
 
-.key.active {
-  background-color: var(--hl-color);
-  color: var(--font-highlight-color);
-  opacity: 1;
-  scale: 0.9;
+  .key.active {
+    color: var(--text-high-contrast-color);
+    background-color: var(--hl-color);
+  }
+  .key.noEditing {
+    opacity: 0.2;
+  }
+  .key.editing {
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: inputAnimation 0.5s forwards;
+    padding: 0.5rem;
+    display: grid;
+    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+    grid-auto-flow: column;
+    border: 0.5px solid #eeeeee;
+    background-color: rgba(32, 32, 32, 1);
+    &:hover {
+      scale: 1;
+    }
+
+    input {
+      border: none;
+      width: 50vw;
+      outline: 0.5px #eeeeee;
+      background-color: transparent;
+      padding: 0 0.5rem;
+    }
+    span {
+      position: absolute;
+      right: 0;
+      width: 10%;
+      background-color: rgba(255, 0, 0, 0.616);
+      height: 100%;
+      border-left: 0.5px solid #eeeeee;
+      display: grid;
+      place-content: center;
+      cursor: pointer;
+      transition: scale 0.2s;
+      &:hover {
+        scale: 1.1;
+      }
+    }
+  }
 }
 @keyframes inputAnimation {
+  from {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+  }
   to {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
   }

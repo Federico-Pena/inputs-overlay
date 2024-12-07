@@ -1,15 +1,14 @@
 import './Settings.css'
 import { useState } from 'react'
-import { keysWindows } from '../../data/keyboards.js'
 import {
   useKeyboardContext,
   useSettingsContext,
   useToastContext
 } from '../../hooks/useContexts.jsx'
-import { SettingsIcon } from '../Icons/Icons.jsx'
+import { ExpandIcon, MoveIcon, SettingsIcon, StrechIcon } from '../Icons/Icons.jsx'
 
-const Settings = () => {
-  const { changeKeyboard } = useKeyboardContext()
+const Settings = ({ handleMouseDown, handleMouseUp }) => {
+  const { restoreKeyboard } = useKeyboardContext()
   const {
     bgColor,
     hlColor,
@@ -17,10 +16,13 @@ const Settings = () => {
     opacity,
     keyboardActive,
     mouseActive,
-    changeActiveMyK,
+    changeActiveUserInputs,
     changeColors,
+    joystickActive,
     changeOpacity,
-    restoreStyles
+    restoreStyles,
+    strechKeys,
+    handleStrechKeys
   } = useSettingsContext()
   const addToast = useToastContext()
 
@@ -29,7 +31,7 @@ const Settings = () => {
     setOpen(!open)
   }
   const resetKeyboard = () => {
-    changeKeyboard(keysWindows)
+    restoreKeyboard()
     addToast('Keyboard reset', 'success')
   }
   const resetStyles = () => {
@@ -44,6 +46,7 @@ const Settings = () => {
     }
     if (event.target.id === 'input-color-highLigth') {
       changeColors('hlColor', newColor)
+      changeColors('textHighContrastColor', getContrastColor(newColor))
       return
     }
     if (event.target.id === 'input-color-text') {
@@ -53,15 +56,16 @@ const Settings = () => {
   }
   const handleChangeCheckbox = (event) => {
     const checked = event.target.checked
-    const visibility = checked ? 'visible' : 'hidden'
     if (event.target.id === 'keyboard-select') {
-      addToast(`Keyboard visibility: ${visibility}`, 'success')
-      changeActiveMyK('keyboardActive', checked)
+      changeActiveUserInputs('keyboardActive', checked)
       return
     }
     if (event.target.id === 'mouse-select') {
-      addToast(`Mouse visibility: ${visibility}`, 'success')
-      changeActiveMyK('mouseActive', checked)
+      changeActiveUserInputs('mouseActive', checked)
+      return
+    }
+    if (event.target.id === 'joystick-select') {
+      changeActiveUserInputs('joystickActive', checked)
       return
     }
   }
@@ -69,93 +73,137 @@ const Settings = () => {
     const value = event.target.value
     changeOpacity(value)
   }
+
   return (
     <section className={`section-settings ${open ? 'open' : ''}`}>
-      <div className="btnSettings" onClick={handleChangeHigh}>
-        <SettingsIcon />
-      </div>
-      <div className="settings-group">
-        <label htmlFor="input-color-highLigth">
-          HighLigth
-          <input
-            id="input-color-highLigth"
-            type="color"
-            value={hlColor}
-            onChange={handleChangeColor}
-          />
-        </label>
-        <label htmlFor="input-color-key">
-          Buttons
-          <input
-            id="input-color-key"
-            type="color"
-            value={bgColor}
-            onChange={handleChangeColor}
-          />
-        </label>
-        <label htmlFor="input-color-text">
-          Text
-          <input
-            id="input-color-text"
-            type="color"
-            value={textColor}
-            onChange={handleChangeColor}
-          />
-        </label>
-      </div>
-      <div className="settings-group">
-        <label htmlFor="keyboard-select">
-          Keyboard
-          <input
-            id="keyboard-select"
-            type="checkbox"
-            className="inputCheck"
-            onChange={handleChangeCheckbox}
-            checked={keyboardActive}
-          />
-          <span className="checkmark"></span>
-        </label>
-        <label htmlFor="mouse-select">
-          Mouse
-          <input
-            id="mouse-select"
-            type="checkbox"
-            className="inputCheck"
-            onChange={handleChangeCheckbox}
-            checked={mouseActive}
-          />
-          <span className="checkmark"></span>
-        </label>
-        <label htmlFor="opacity-select">
-          Opacity
-          <input
-            id="mouse-select"
-            type="range"
-            min={0}
-            max={1}
-            step={0.1}
-            value={opacity}
-            onChange={handleChangeRange}
-          />
-        </label>
-      </div>
-      <div className="settings-group">
-        <button
-          className="settings-group-btn"
-          title={'Reset keys'}
-          onClick={resetKeyboard}
-        >
-          Default keys
-        </button>
-        <button
-          className="settings-group-btn"
-          title={'Reset styles'}
-          onClick={resetStyles}
-        >
-          Default styles
-        </button>
+      <header>
+        {open && (
+          <>
+            <span
+              role="button"
+              className="btnMove"
+              onMouseDown={handleMouseDown}
+              onMouseUp={handleMouseUp}
+              title={'Move'}
+            >
+              <MoveIcon />
+            </span>
+            <span
+              role="button"
+              className="btnStrech"
+              onClick={handleStrechKeys}
+              title={strechKeys ? 'Expand' : 'Strech'}
+            >
+              {strechKeys ? <ExpandIcon /> : <StrechIcon />}
+            </span>
+          </>
+        )}
+        <span role="button" className="btnSettings" onClick={handleChangeHigh} title={'Settings'}>
+          <SettingsIcon />
+        </span>
+      </header>
+
+      <div className="hiddenContainer">
+        <div className="settings-group">
+          <label htmlFor="input-color-highLigth">
+            HighLigth
+            <input
+              id="input-color-highLigth"
+              type="color"
+              value={hlColor}
+              onChange={handleChangeColor}
+            />
+          </label>
+          <label htmlFor="input-color-key">
+            Background
+            <input id="input-color-key" type="color" value={bgColor} onChange={handleChangeColor} />
+          </label>
+          <label htmlFor="input-color-text">
+            Text
+            <input
+              id="input-color-text"
+              type="color"
+              value={textColor}
+              onChange={handleChangeColor}
+            />
+          </label>
+        </div>
+        <div className="settings-group">
+          <label htmlFor="joystick-select">
+            Joystick
+            <input
+              id="joystick-select"
+              type="checkbox"
+              className="inputCheck"
+              onChange={handleChangeCheckbox}
+              checked={joystickActive}
+            />
+            <span className="checkmark"></span>
+          </label>
+          {joystickActive ? null : (
+            <label htmlFor="keyboard-select">
+              Keyboard
+              <input
+                id="keyboard-select"
+                type="checkbox"
+                className="inputCheck"
+                onChange={handleChangeCheckbox}
+                checked={keyboardActive}
+              />
+              <span className="checkmark"></span>
+            </label>
+          )}
+          {joystickActive ? null : (
+            <label htmlFor="mouse-select">
+              Mouse
+              <input
+                id="mouse-select"
+                type="checkbox"
+                className="inputCheck"
+                onChange={handleChangeCheckbox}
+                checked={mouseActive}
+              />
+              <span className="checkmark"></span>
+            </label>
+          )}
+        </div>
+
+        <div className="settings-group">
+          <label htmlFor="opacity-select">
+            Opacity
+            <input
+              id="opacity-select"
+              type="range"
+              min={0}
+              max={1}
+              step={0.1}
+              value={opacity}
+              onChange={handleChangeRange}
+            />
+          </label>
+        </div>
+
+        <div className="settings-group">
+          <button className="settings-group-btn" title={'Reset keys'} onClick={resetKeyboard}>
+            Default keys
+          </button>
+          <button className="settings-group-btn" title={'Reset styles'} onClick={resetStyles}>
+            Default styles
+          </button>
+        </div>
       </div>
     </section>
   )
 }
 export default Settings
+
+function getContrastColor(hlColor) {
+  const r = parseInt(hlColor.slice(1, 3), 16)
+  const g = parseInt(hlColor.slice(3, 5), 16)
+  const b = parseInt(hlColor.slice(5, 7), 16)
+
+  const brightness = r * 0.299 + g * 0.587 + b * 0.114
+
+  const contrastColor = brightness > 128 ? '#000000' : '#FFFFFF'
+  return contrastColor
+}

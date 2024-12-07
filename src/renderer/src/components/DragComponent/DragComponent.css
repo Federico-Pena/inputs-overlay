@@ -1,0 +1,36 @@
+.dragComponent {
+  display: flex;
+  color: var(--font-color);
+  flex-direction: column;
+  user-select: none;
+  pointer-events: none;
+  padding: 0.5rem;
+}
+.dragComponent:has(.open) {
+  pointer-events: all;
+}
+.dragComponent.focused {
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.199));
+}
+
+@media (orientation: landscape) {
+  .dragComponent:has(.open) {
+    pointer-events: all;
+    .section-settings {
+      max-height: none;
+    }
+  }
+  .dragComponent:has(.keyboard):has(.mouse) {
+    grid-template-columns: 3fr 1fr;
+  }
+  .dragComponent {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 1fr;
+
+    .section-settings {
+      grid-column: 1/-1;
+      max-height: 30px;
+    }
+  }
+}

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import './Mouse.css'
-import { useSettingsContext, useToastContext } from '../../hooks/useContexts'
+import { useToastContext } from '../../hooks/useContexts'
 import { DirectionWheelIcon } from '../Icons/Icons'
-import { ipcRender } from '../../utils/electronSocket.js'
+import { recibeDataFromMain, EVENTS } from '../../utils/electronSocket.js'
 const mouseButtons = {
   left: 0,
   middle: 1,
@@ -13,58 +13,55 @@ const mouseButtons = {
 
 function Mouse() {
   const [clickedButtons, setClickedButtons] = useState([])
-  const { bgColor, hlColor, opacity } = useSettingsContext()
   const addToast = useToastContext()
-
   useEffect(() => {
-    ipcRender.on('keyboard-mouse-event', (event, data) => {
-      const keyOrButton = data.split('.')[1]
-      if (data.startsWith('MouseClicked:')) {
-        setClickedButtons((prevButtons) => [...prevButtons, mouseButtons[keyOrButton]])
+    recibeDataFromMain(EVENTS.mouse, (data) => {
+      const { eventType, data: eventData, name } = data
+      if (eventType === 'mouseConnected') {
+        addToast(`Mouse detected: ${name}`, 'success')
       }
-      if (data.startsWith('MouseReleased:')) {
+      if (eventType === 'mouseDisconnected') {
+        addToast(`Mouse disconnected: ${name}`)
+      }
+      if (eventType === 'mouseUnplugged') {
+        addToast('Waiting for mouse...')
+      }
+      if (eventType === 'mouseClicked') {
+        setClickedButtons((prevButtons) => [...prevButtons, mouseButtons[eventData]])
+      }
+      if (eventType === 'mouseReleased') {
         setClickedButtons((prevButtons) =>
-          prevButtons.filter((key) => key !== mouseButtons[keyOrButton])
+          prevButtons.filter((key) => key !== mouseButtons[eventData])
         )
       }
-      if (data === 'wheelUp' || data === 'wheelDown') {
+      if (eventType === 'wheelUp' || eventType === 'wheelDown') {
         setTimeout(() => {
           setClickedButtons((prevButtons) =>
             [...prevButtons].filter((b) => b !== 'wheelUp' && b !== 'wheelDown')
           )
         }, 500)
-        setClickedButtons((prevButtons) => [...prevButtons, data])
+        setClickedButtons((prevButtons) => [...prevButtons, eventType])
       }
-      return keyOrButton
     })
   }, [])
 
   return (
-    <div
-      className="mouse"
-      style={{ '--opacity': opacity, '--bg-color': bgColor, '--hl-color': hlColor }}
-    >
-      <div
-        className={`mouse-button side-forward ${getActiveButtons(clickedButtons, 4)}`}
-      ></div>
-      <div
-        className={`mouse-button side-back ${getActiveButtons(clickedButtons, 3)}`}
-      ></div>
+    <section className="mouse">
+      <div className="sideButtons">
+        <div className={`mouse-button side-forward ${getActiveButtons(clickedButtons, 4)}`}></div>
+        <div className={`mouse-button side-back ${getActiveButtons(clickedButtons, 3)}`}></div>
+      </div>
       <div className={`mouse-button left ${getActiveButtons(clickedButtons, 0)}`}></div>
       <div className={`mouse-button middle ${getActiveButtons(clickedButtons, 1)}`}>
-        <span
-          className={`middle-direction ${getWheelDirection(clickedButtons, 'wheelUp')}`}
-        >
+        <span className={`middle-direction ${getWheelDirection(clickedButtons, 'wheelUp')}`}>
           <DirectionWheelIcon />
         </span>
-        <span
-          className={`middle-direction ${getWheelDirection(clickedButtons, 'wheelDown')}`}
-        >
+        <span className={`middle-direction ${getWheelDirection(clickedButtons, 'wheelDown')}`}>
           <DirectionWheelIcon />
         </span>
       </div>
       <div className={`mouse-button right ${getActiveButtons(clickedButtons, 2)}`}></div>
-    </div>
+    </section>
   )
 }
 

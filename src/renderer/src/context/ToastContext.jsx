@@ -1,14 +1,24 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useState } from 'react'
 import { ToastContainer } from '../components/ToastContainer/ToastContainer.jsx'
 
 export const ToastContext = createContext()
 
 export const ToastContextProvider = ({ children }) => {
   const [toasts, setToasts] = useState([])
-
+  /**
+   *
+   * @param {string} message
+   * @param {string} type | info, success, error, warning
+   */
   const addToast = (message, type = 'info') => {
     const id = Date.now()
-    setToasts((prev) => [...prev, { id, message, type }])
+    setToasts((prev) => {
+      const messageExist = prev.some((t) => t.message.toLowerCase() === message.toLowerCase())
+      if (messageExist) {
+        return prev
+      }
+      return [...prev, { id, message, type }]
+    })
     setTimeout(() => removeToast(id), 3000)
   }
 

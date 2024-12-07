@@ -1,11 +1,21 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSettingsContext, useToastContext } from '../../hooks/useContexts'
-import { ipcRender } from '../../utils/electronSocket.js'
-
-const DragComponent = ({ children }) => {
+import { EVENTS, recibeDataFromMain } from '../../utils/electronSocket.js'
+import './DragComponent.css'
+import Settings from '../Settings/Settings.jsx'
+import Keyboard from '../Keyboard/Keyboard.jsx'
+import Mouse from '../Mouse/Mouse.jsx'
+import Joystick from '../Joystick/Joystick.jsx'
+const DragComponent = () => {
   const {
+    bgColor,
+    hlColor,
+    textHighContrastColor,
+    textColor,
+    opacity,
     mouseActive,
     keyboardActive,
+    joystickActive,
     changeWinSize,
     changeSettingsWinPosition,
     winPosition,
@@ -15,33 +25,28 @@ const DragComponent = ({ children }) => {
   const [windowPosition, setWindowsPosition] = useState(winPosition)
   const [startMousePosition, setStartMousePosition] = useState(null)
   const addToast = useToastContext()
+  const dragRef = useRef(null)
 
   useEffect(() => {
     try {
-      ipcRender.on('windowPosition-reset', (event, data) => {
+      recibeDataFromMain(EVENTS.resizeWindows, (data) => {
+        changeWinSize(data)
+      })
+
+      recibeDataFromMain(EVENTS.windowPositionReset, (data) => {
         changeSettingsWinPosition(data)
         setWindowsPosition(data)
       })
     } catch (error) {
-      console.log('windowPosition-reset ', error)
-
       addToast('Something went wrong.', 'error')
     }
     try {
-      ipcRender.on('windowSize-reset', (event, data) => {
+      recibeDataFromMain(EVENTS.windowSizeReset, (data) => {
         const { width, height } = data
         changeWinSize({ width, height })
-        console.log('windowSize-reset ', error)
       })
     } catch (error) {
       addToast('Something went wrong.', 'error')
-    }
-  }, [])
-
-  useEffect(() => {
-    window.addEventListener('resize', getEndOfResize)
-    return () => {
-      window.removeEventListener('resize', getEndOfResize)
     }
   }, [])
 
@@ -60,12 +65,14 @@ const DragComponent = ({ children }) => {
 
   const handleMouseLeave = () => {
     setIsDragging(false)
+    dragRef.current.classList.remove('focused')
   }
   const handleMouseMove = (event) => {
+    dragRef.current.classList.add('focused')
     if (isDragging && startMousePosition) {
       const deltaX = event.clientX - startMousePosition.x
       const deltaY = event.clientY - startMousePosition.y
-      const newX = Math.max(windowPosition.x + deltaX, 0)
+      const newX = windowPosition.x + deltaX
       const newY = Math.max(windowPosition.y + deltaY, 0)
       const screenWidth = window.screen.width
       const screenHeight = window.screen.height
@@ -81,40 +88,39 @@ const DragComponent = ({ children }) => {
     }
   }
 
-  let resizeTimeout
-  const getEndOfResize = (event) => {
-    if (resizeTimeout) clearTimeout(resizeTimeout)
-    resizeTimeout = setTimeout(() => {
-      handleResize(event)
-    }, 100)
-  }
-
-  const handleResize = (event) => {
-    const width = event.target.innerWidth
-    const height = event.target.innerHeight
-    changeWinSize({ width, height })
-  }
   return (
     <div
-      className={createClassNames(mouseActive, keyboardActive)}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
+      ref={dragRef}
+      className={createClassNames(mouseActive, keyboardActive, joystickActive)}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      style={{
+        '--font-color': textColor,
+        '--bg-color': bgColor,
+        '--hl-color': hlColor,
+        '--text-high-contrast-color': textHighContrastColor,
+        '--opacity': opacity
+      }}
     >
-      {children}
+      <Settings handleMouseDown={handleMouseDown} handleMouseUp={handleMouseUp} />
+      {keyboardActive && <Keyboard />}
+      {mouseActive && <Mouse />}
+      {joystickActive && <Joystick />}
     </div>
   )
 }
 export default DragComponent
 
-const createClassNames = (mouseActive, keyboardActive) => {
+const createClassNames = (mouseActive, keyboardActive, joystickActive) => {
   let className = 'dragComponent'
   if (mouseActive) {
     className += ' mouseActive'
   }
   if (keyboardActive) {
     className += ' keyboardActive'
+  }
+  if (joystickActive) {
+    className += ' joystickActive'
   }
   return className
 }

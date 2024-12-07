@@ -1,6 +1,6 @@
-# kym-overlay
+# inputs-overlay
 
-A **Keyboard and Mouse Overlay** built with Electron and Python.
+A **Keyboard, Mouse and Gamepad Overlay** built with Electron and Python.
 
 ## Recommended IDE Setup
 
@@ -87,35 +87,21 @@ Use the appropriate build command for your operating system:
 
 ---
 
-### 4. Python Script Usage
-
-The app relies on a Python script to track keyboard and mouse events. Make sure the virtual environment is active before running any Python code.
-
-To start listening for events manually (for testing purposes):
-
-```bash
-python path/to/your_script.py
-```
-
----
-
-### 5. File Structure
+### 4. File Structure
 
 ```
 kym-overlay/
 │
-├── venv/                  # Virtual environment (ignored in .gitignore)
-├── src/                   # Source code of the Electron app
-├── python/                # Python scripts and logic
+├── venv/                  # Virtual environment
+├── src/Electron app       # Electron app source code
 ├── requirements.txt       # Python dependencies
 ├── package.json           # Node.js project file
-├── .gitignore             # Files to ignore in Git
-└── README.md              # Project documentation
+└── ...configFiles         # Config files
 ```
 
 ---
 
-### 6. .gitignore Configuration
+### 5. .gitignore Configuration
 
 Ensure the `venv` folder and other unnecessary files are not pushed to GitHub. The following `.gitignore` entry will help:
 
@@ -136,7 +122,7 @@ node_modules/
 
 ---
 
-### 7. Install Dependencies after Cloning
+### 6. Install Dependencies after Cloning
 
 After cloning the repository, follow these steps:
 
@@ -161,13 +147,8 @@ After cloning the repository, follow these steps:
 
 ---
 
-### 8. Troubleshooting
+### 7. Troubleshooting
 
-- If the Python module `pynput` is missing, make sure to run:
-  ```bash
-  pip install pynput
-  ```
 - Ensure that Python is correctly added to your system's PATH if you encounter "Python not found" errors.
-- If Node.js commands fail, verify that Node.js and npm are properly installed.
 
 ---

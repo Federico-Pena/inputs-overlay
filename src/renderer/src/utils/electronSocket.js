@@ -1,7 +1,27 @@
 const ipcRender = window.electron.ipcRenderer
+const apiState = window.api
 
-const handleWinPosition = (position) => ipcRender.send('windowPosition', position)
+const sendDataToMain = (nameOfEvent, data) => {
+  ipcRender.send(nameOfEvent, data)
+}
 
-const handleWinSize = (size) => ipcRender.send('windowSize', size)
+const recibeDataFromMain = (nameOfEvent, callback) => {
+  if (typeof callback === 'function') {
+    ipcRender.on(nameOfEvent, (event, data) => {
+      callback(data)
+    })
+  }
+}
 
-export { handleWinPosition, handleWinSize, ipcRender }
+const EVENTS = {
+  windowPosition: 'windowPosition',
+  resizeWindows: 'resizeWindows',
+  windowPositionReset: 'windowPosition-reset',
+  windowSizeReset: 'windowSize-reset',
+  inputsActive: 'inputs-active',
+  keyboard: 'Keyboard',
+  mouse: 'Mouse',
+  gamepad: 'Gamepad'
+}
+
+export { sendDataToMain, recibeDataFromMain, EVENTS, apiState }

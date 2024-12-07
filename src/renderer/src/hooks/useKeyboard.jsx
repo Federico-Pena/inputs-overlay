@@ -1,37 +1,45 @@
 import { useState, useEffect } from 'react'
 import { useKeyboardContext, useToastContext } from './useContexts.jsx'
-import { formatNewKey } from '../data/keyboards.js'
-import { ipcRender } from '../utils/electronSocket.js'
+import { EVENTS, recibeDataFromMain } from '../utils/electronSocket.js'
+import { getOperatingSystem } from '../utils/getOperatingSystem.js'
 
 const useKeyboard = () => {
   const { keyboard, changeKeyboard } = useKeyboardContext()
   const [pressedKeys, setPressedKeys] = useState([])
+  const [os] = useState(getOperatingSystem())
   const addToast = useToastContext()
 
   useEffect(() => {
     try {
-      ipcRender.on('keyboard-mouse-event', (event, data) => {
-        const keyOrButton = data.split(':')[1] || ' '
-        if (data.startsWith('keydown:')) {
-          const { display, key } = formatNewKey(keyOrButton)
-          if (!pressedKeys.includes(display)) {
-            setPressedKeys((prevKeys) => [...prevKeys, display])
-          }
-          if (key === 'Meta') {
-            setTimeout(() => {
-              setPressedKeys((prevKeys) => prevKeys.filter((key) => key !== display))
-            }, 200)
-          }
+      recibeDataFromMain(EVENTS.keyboard, (data) => {
+        const { eventType, friendlyName, name } = data
+        if (eventType === 'keyboardConnected') {
+          addToast(`Keyboard detected: ${name}`, 'success')
         }
-        if (data.startsWith('keyup:')) {
-          const { display } = formatNewKey(keyOrButton)
-          setPressedKeys((prevKeys) => prevKeys.filter((key) => key !== display))
+        if (eventType === 'keyboardDisconnected') {
+          addToast(`Keyboard disconnected: ${name}`)
+        }
+        if (eventType === 'keyboardUnplugged') {
+          addToast('Waiting for keyboard...')
+        }
+        if (eventType === 'keydown') {
+          setPressedKeys((prevKeys) => [...prevKeys, friendlyName])
+        }
+        if (eventType === 'keyup') {
+          setPressedKeys((prevKeys) => prevKeys.filter((key) => key !== friendlyName))
         }
       })
     } catch (error) {
       addToast('Ups something went wrong', 'error')
     }
   }, [])
+
+  const changeKey = (rowIndex, colIndex, keyName) => {
+    const newKeyboard = [...keyboard]
+    newKeyboard[rowIndex][colIndex] = keyName
+    changeKeyboard(newKeyboard)
+    addToast(`Key changed to: "${keyName}"`, 'success')
+  }
 
   const deleteKey = (rowIndex, keyIndex) => {
     const newKeyboard = keyboard
@@ -42,9 +50,9 @@ const useKeyboard = () => {
         return row
       })
       .filter((row) => row.length > 0)
-    addToast(`Key deleted: "${keyboard[rowIndex][keyIndex].display}"`, 'success')
+    addToast(`Key deleted: "${keyboard[rowIndex][keyIndex]}"`, 'success')
     changeKeyboard(newKeyboard)
   }
-  return { deleteKey, pressedKeys }
+  return { changeKey, deleteKey, pressedKeys, os }
 }
 export default useKeyboard
