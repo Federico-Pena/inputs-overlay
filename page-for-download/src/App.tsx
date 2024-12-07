@@ -26,7 +26,7 @@ function App() {
         <h1>{t.title}</h1>
 
         <a
-          href="downloadable/Inputs_Overlay.exe"
+          href="downloadable/Inputs_Overlay"
           download
           className="download-button"
           aria-label={t.download}

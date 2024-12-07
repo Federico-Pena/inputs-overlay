@@ -40,6 +40,11 @@
   ],
   "win": {
     "icon": "resources/icon.ico",
-    "target": ["nsis"]
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      }
+    ]
   }
 }

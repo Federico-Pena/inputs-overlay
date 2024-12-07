@@ -1,12 +1,21 @@
-const { mkdir, rm } = require('node:fs/promises')
+const { mkdir, copyFile } = require('node:fs/promises')
 const { existsSync } = require('node:fs')
-const { exec } = require('node:child_process')
-const { join } = require('node:path')
+const { join, dirname } = require('node:path')
 
 const compressAndCopyFile = async (source, destination) => {
-  return new Promise((resolve, reject) => {
-    const newFilePath = join(destination, 'Inputs_Overlay')
-    const command = `rar a -ep -sfx "${newFilePath}" "${source}"`
+  try {
+    if (!existsSync(destination)) {
+      await mkdir(destination, { recursive: true })
+      consoleColor(`Directory created: ${destination}`, 'green')
+    }
+    const destinationFile = join(destination, 'Inputs_Overlay')
+    await copyFile(source, destinationFile)
+    return `File successfully compressed to: ${destination}`
+  } catch (error) {
+    throw new Error(`${error.message}`)
+  }
+  /*  return new Promise((resolve, reject) => {
+    const command = `rar a "${newFilePath}" "${source}"`
     exec(command, (error, stdout, stderr) => {
       if (error) {
         if (error.message.includes('"rar"')) {
@@ -22,7 +31,7 @@ const compressAndCopyFile = async (source, destination) => {
         resolve(`File successfully compressed to: ${destination}`)
       }
     })
-  })
+  }) */
 }
 /**
  *
@@ -51,16 +60,11 @@ exports.default = async function (context) {
       throw new Error(`The file ${source} does not exist.`)
     }
 
-    if (!existsSync(frontendDestinationDir)) {
-      await mkdir(frontendDestinationDir, { recursive: true })
-      consoleColor(`Directory created: ${frontendDestinationDir}`, 'green')
-    }
-
     const resultCopy = await compressAndCopyFile(source, frontendDestinationDir)
     consoleColor(resultCopy, 'green')
 
-    await rm(context.outDir, { recursive: true, force: true })
-    consoleColor(`Directory deleted: ${context.outDir}`, 'green')
+    /* await rm(context.outDir, { recursive: true, force: true })
+    consoleColor(`Directory deleted: ${context.outDir}`, 'green') */
     consoleColor('-'.repeat(consoleWidth), 'black')
     consoleColor('Finish copy-setup-before-build', 'green')
   } catch (error) {
