@@ -5,7 +5,7 @@ const { join } = require('node:path')
 
 const compressAndCopyFile = async (source, destination) => {
   return new Promise((resolve, reject) => {
-    const newFilePath = join(destination, 'Setup')
+    const newFilePath = join(destination, 'Inputs_Overlay')
     const command = `rar a -ep "${newFilePath}" "${source}"`
     exec(command, (error, stdout, stderr) => {
       if (error) {
@@ -42,12 +42,7 @@ const consoleColor = (text, color = 'white') => {
 exports.default = async function (context) {
   try {
     const consoleWidth = process.stdout.columns
-    const frontendDestinationDir = join(
-      process.cwd(),
-      'page-for-download',
-      'public',
-      'downloadable'
-    )
+    const frontendDestinationDir = join(process.cwd(), 'page-for-download', 'dist', 'downloadable')
     consoleColor('-'.repeat(consoleWidth), 'black')
     const source = context.artifactPaths[1]
     consoleColor(`Copy file ${source} to ${frontendDestinationDir}`, 'green')
