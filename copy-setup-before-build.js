@@ -1,6 +1,6 @@
-const { mkdir, copyFile } = require('node:fs/promises')
+const { mkdir, copyFile, rm } = require('node:fs/promises')
 const { existsSync } = require('node:fs')
-const { join, dirname } = require('node:path')
+const { join } = require('node:path')
 
 const compressAndCopyFile = async (source, destination) => {
   try {
@@ -8,7 +8,7 @@ const compressAndCopyFile = async (source, destination) => {
       await mkdir(destination, { recursive: true })
       consoleColor(`Directory created: ${destination}`, 'green')
     }
-    const destinationFile = join(destination, 'Inputs_Overlay')
+    const destinationFile = join(destination, 'Inputs_Overlay.txt')
     await copyFile(source, destinationFile)
     return `File successfully compressed to: ${destination}`
   } catch (error) {
@@ -51,7 +51,12 @@ const consoleColor = (text, color = 'white') => {
 exports.default = async function (context) {
   try {
     const consoleWidth = process.stdout.columns
-    const frontendDestinationDir = join(process.cwd(), 'page-for-download', 'dist', 'downloadable')
+    const frontendDestinationDir = join(
+      process.cwd(),
+      'page-for-download',
+      'public',
+      'downloadable'
+    )
     consoleColor('-'.repeat(consoleWidth), 'black')
     const source = context.artifactPaths[1]
     consoleColor(`Copy file ${source} to ${frontendDestinationDir}`, 'green')
@@ -63,8 +68,8 @@ exports.default = async function (context) {
     const resultCopy = await compressAndCopyFile(source, frontendDestinationDir)
     consoleColor(resultCopy, 'green')
 
-    /* await rm(context.outDir, { recursive: true, force: true })
-    consoleColor(`Directory deleted: ${context.outDir}`, 'green') */
+    await rm(context.outDir, { recursive: true, force: true })
+    consoleColor(`Directory deleted: ${context.outDir}`, 'green')
     consoleColor('-'.repeat(consoleWidth), 'black')
     consoleColor('Finish copy-setup-before-build', 'green')
   } catch (error) {

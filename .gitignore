@@ -1,5 +1,6 @@
 node_modules
 page-for-download/node_modules
+page-for-download/public/downloadable
 out
 venv
-dist
+/dist
