@@ -4,6 +4,7 @@ interface Texts {
     download: string
     downloadWarning: string
     souceCode: string
+    changeExtension: string
     platform: string
     featuresTitle: string
     features: string[]
@@ -27,8 +28,9 @@ export const texts: Texts = {
       '👁️ Show/Hide: Toggle the keyboard and mouse as needed.'
     ],
     whyTitle: 'Why Choose Inputs Overlay?',
+    changeExtension: 'After downloading, change the extension to .exe',
     downloadWarning:
-      'The browser may flag the download as unsafe. If it does, please click "Keep anyway".',
+      'The browser may flag the download as unsafe. If it does, click "Keep anyway".',
     souceCode: 'You can find the source code at:',
     whyText:
       "Whether you're a content creator, streamer, or instructor, Inputs Overlay helps visually communicate user actions on the screen. Easily customize the look and behavior of the keyboard and mouse overlay to fit your needs.",
@@ -47,6 +49,7 @@ export const texts: Texts = {
       '👁️ Mostrar/Ocultar: Alterna la visibilidad del teclado y el ratón según sea necesario.'
     ],
     whyTitle: '¿Por qué elegir Inputs Overlay?',
+    changeExtension: 'Después de descargar, cambia la extensión a .exe',
     downloadWarning:
       'El navegador puede marcar la descarga como no segura. Si esto sucede, haz clic en "Conservar de todos modos".',
     souceCode: 'Puedes encontrar el código fuente en:',

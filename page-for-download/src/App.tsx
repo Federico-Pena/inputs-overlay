@@ -24,18 +24,24 @@ function App() {
         </div>
 
         <h1>{t.title}</h1>
+        <div className="sectionDescarga">
+          <div className="containerWarning">
+            <p className="download-warning">⚠️ {t.changeExtension}</p>
+            <p className="download-warning">⚠️ {t.downloadWarning}</p>
+          </div>
+          <div className="containerButtonDowload">
+            <a
+              href="downloadable/Inputs_Overlay.txt"
+              download
+              className="download-button"
+              aria-label={t.download}
+            >
+              {t.download}
+            </a>
+            <span>{t.platform}</span>
+          </div>
+        </div>
 
-        <a
-          href="downloadable/Inputs_Overlay.txt"
-          download
-          className="download-button"
-          aria-label={t.download}
-        >
-          {t.download}
-        </a>
-        <span>{t.platform}</span>
-
-        <p className="download-warning">⚠️ {t.downloadWarning}</p>
         <p className="source-code-link">
           {t.souceCode}{' '}
           <a

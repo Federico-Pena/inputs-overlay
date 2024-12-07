@@ -17,6 +17,7 @@ main {
   line-height: 1.6;
   display: grid;
   row-gap: 1rem;
+  text-wrap: pretty;
 }
 .language-selector {
   place-self: end;
@@ -45,9 +46,52 @@ section {
 header {
   display: grid;
   row-gap: 1rem;
-  span {
-    text-align: center;
+  .sectionDescarga {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    row-gap: 1rem;
+    .containerWarning {
+      display: grid;
+      gap: 0.5rem;
+      border-bottom: 1px solid #ffffff;
+      padding-bottom: 1rem;
+      .download-warning {
+        display: flex;
+        align-items: center;
+        text-align: left;
+        background-color: #ff0000a2;
+        font-weight: bold;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        font-size: 0.9rem;
+      }
+    }
+    .containerButtonDowload {
+      display: grid;
+      gap: 0.5rem;
+      span {
+        text-align: end;
+      }
+      .download-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-weight: bold;
+        background-color: rgb(0, 105, 204);
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      .download-button:hover {
+        background-color: #0056b3;
+      }
+    }
   }
+  /* span {
+    text-align: center;
+  } */
 }
 h1,
 h2 {
@@ -75,28 +119,6 @@ ul {
   border-radius: 0.3rem;
 }
 
-.download-button {
-  margin: 1rem auto auto auto;
-  text-align: center;
-  font-weight: bold;
-  padding: 10px 20px;
-  background-color: #09f;
-  color: #000000;
-  text-decoration: none;
-  border-radius: 5px;
-  font-size: 18px;
-  transition: background-color 0.3s;
-}
-
-.download-button:hover {
-  background-color: #0056b3;
-}
-.download-warning {
-  color: red;
-  font-weight: bold;
-  margin-top: 10px;
-  font-size: 0.9rem;
-}
 .source-code-link {
   text-align: center;
   font-weight: bold;
