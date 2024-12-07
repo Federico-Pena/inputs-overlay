@@ -6,7 +6,7 @@ const { join } = require('node:path')
 const compressAndCopyFile = async (source, destination) => {
   return new Promise((resolve, reject) => {
     const newFilePath = join(destination, 'Inputs_Overlay')
-    const command = `rar a -ep "${newFilePath}" "${source}"`
+    const command = `rar a -ep -sfx "${newFilePath}" "${source}"`
     exec(command, (error, stdout, stderr) => {
       if (error) {
         if (error.message.includes('"rar"')) {
